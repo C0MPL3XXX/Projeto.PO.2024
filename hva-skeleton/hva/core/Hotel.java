@@ -3,7 +3,9 @@ package hva.core;
 import hva.core.exception.*;
 import java.io.*;
 import java.util.*;
+
 // FIXME import classes
+import hva.core.*;
 
 public class Hotel implements Serializable {
 
@@ -11,9 +13,18 @@ public class Hotel implements Serializable {
   private static final long serialVersionUID = 202407081733L;
   
   // FIXME define attributes
+  private Season season;
+
   // FIXME define contructor(s)
-  // FIXME define more methods
+
+  public Hotel(Season s){
+    season = s;
+  }
   
+  // FIXME define more methods
+  public void addAnimal(String idA, String name, String idHab, String idSpe){
+    
+  }
   /**
    * Read text input file and create corresponding domain entities.
    * 
