@@ -7,7 +7,7 @@ public class Animal implements Serializable {
 
     private String uniqueId;
     private String name;
-    private ArrayList<Integer> health = new ArrayList<Integer>();
+    private ArrayList<String> health = new ArrayList<String>();
     private Habitat currentHabitat;
     private Species species;
 
@@ -44,6 +44,17 @@ public class Animal implements Serializable {
         return satisfaction;
     }
 
-    //public String toString(){}
-    //private transferTo(Habitat h){}
+    public String toString() {
+        if (this.health.isEmpty()) {
+            return "ANIMAL|" + this.uniqueId + "|" + this.name + "|" + this.getSpecies().getId()
+                    + "|VOID|" + this.currentHabitat.getUniqueId();
+        }
+        return "ANIMAL|" + this.uniqueId + "|" + this.name + "|" + this.getSpecies().getId()
+                + "|" + this.health + "|" + this.currentHabitat.getUniqueId();
+    }
+
+    private void transferTo(Habitat h) {
+        this.currentHabitat = h;
+        //not sure if this is done yet
+    }
 }
