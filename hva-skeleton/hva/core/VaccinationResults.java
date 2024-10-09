@@ -1,6 +1,8 @@
 package hva.core;
 
-public enum VaccinationResults {
+import java.io.Serializable;
+
+public enum VaccinationResults implements Serializable {
     NORMAL, CONFUSION, ACCIDENT, ERROR;
 
 }

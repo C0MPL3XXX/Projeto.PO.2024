@@ -1,19 +1,34 @@
 package hva.core;
 
-public class Species{
-    private String uniqueId;
-    
+import java.io.Serializable;
 
-    public String getId(){
+public class Species implements Serializable {
+
+    //Atributes
+    private String uniqueId;
+    private String name;
+
+    //Constructor
+    public Species(String id, String name) {
+
+    }
+
+    //Getters
+    public String getId() {
         return this.uniqueId;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    //Methods
     @Override
-    public boolean equals(Object other){
-        if(other instanceof Species){
-            Species s = (Species)other;
-            return this.uniqueId == s.getId();
+    public boolean equals(Object other) {
+        if (other instanceof Species) {
+            Species s = (Species) other;
+            return this.uniqueId.equals(s.getId());
         }
-        return false; 
+        return false;
     }
 }
