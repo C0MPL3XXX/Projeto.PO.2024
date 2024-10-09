@@ -8,6 +8,7 @@ public abstract class Tree implements Serializable {
     protected Season season;
     protected int age;
     protected int difficultyClean;
+    protected int seasonsPassed;
 
     // Constructor
     public Tree(int age, int diffClean) {
@@ -19,6 +20,11 @@ public abstract class Tree implements Serializable {
     //Methods
     void nextSeasonCall() {
         this.season = season.nextSeason();
+        seasonsPassed += 1;
+        if (seasonsPassed % 4 == 0) {
+            age += 1;
+        }
+
     }
 
     abstract int seasonalEffort();

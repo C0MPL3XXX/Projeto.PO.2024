@@ -12,6 +12,7 @@ public class Habitat implements Serializable {
     private TreeMap<String, Animal> animals = new TreeMap<>();
     private TreeMap<String, Tree> trees = new TreeMap<>();
     private TreeMap<String, Integer> speciesImpact = new TreeMap<>();
+    private TreeMap<String, Employee> employees = new TreeMap<>();
 
     // Getters
     public String getUniqueId() {
@@ -30,7 +31,19 @@ public class Habitat implements Serializable {
         return this.speciesImpact;
     }
 
+    public TreeMap<String, Employee> getEmployees() {
+        return this.employees;
+    }
+
     // Methods
+    void addEmployee(Zookeeper z) {
+        employees.put(z.getUniqueId(), z);
+    }
+
+    void removeEmployee(Zookeeper z) {
+        employees.remove(z.getUniqueId());
+    }
+
     void add(Animal a) {
         animals.put(a.getUniqueId(), a);
         if (speciesImpact.containsKey(a.getSpecies().getName()) == false) {
@@ -56,5 +69,13 @@ public class Habitat implements Serializable {
 
     int impactOf(Species s) {
         return speciesImpact.get(s.getId());
+    }
+
+    public int workHabitat() {
+        int totalWorkTrees = 0;
+        for (Tree t : trees.values()) {
+            totalWorkTrees += t.cleaningEffort();
+        }
+        return this.area + (3 * animals.size()) + totalWorkTrees;
     }
 }
