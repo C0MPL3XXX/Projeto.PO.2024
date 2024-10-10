@@ -5,10 +5,10 @@ import java.io.Serializable;
 public class VaccineApplication implements Serializable {
 
     //Atribute
-    private VaccinationResults result;
-    private Veterinarian vet;
-    private Animal animal;
-    private Vaccine vaccine;
+    private final VaccinationResults result;
+    private final Veterinarian vet;
+    private final Animal animal;
+    private final Vaccine vaccine;
 
     //Constructor
     public VaccineApplication(VaccinationResults result, Veterinarian vet, Animal animal, Vaccine vaccine) {

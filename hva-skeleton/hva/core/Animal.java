@@ -7,9 +7,9 @@ public class Animal extends HotelEntity {
     //Atributes
     private String uniqueId;
     private String name;
-    private ArrayList<VaccinationResults> health = new ArrayList<>();
+    private final ArrayList<VaccinationResults> health = new ArrayList<>();
     private Habitat currentHabitat;
-    private Species species;
+    private final Species species;
 
     //Constructor
     public Animal(String id, String name, Habitat habitat, Species s) {

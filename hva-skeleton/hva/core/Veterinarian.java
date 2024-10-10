@@ -79,6 +79,10 @@ public class Veterinarian extends Employee {
         } else {
             result = VaccinationResults.ERROR;
         }
-        a.getHealth().add(result);
+        VaccineApplication VaccineUsed = new VaccineApplication(result, this, a, v);
+        if (VaccineUsed.isCorrect()) {
+            a.getHealth().add(result);
+            v.addUsage(VaccineUsed);
+        }
     }
 }
