@@ -84,8 +84,9 @@ public class Parser {
             String speciesId = components[3];
 
             _hotel.registerAnimal(id, name, habitatId, speciesId);
-        } catch (excCore1 | excpCore      2 |
+        } catch (excCore1 | excpCore       2 |
                 
+            
             
             
                 ...) {
@@ -118,8 +119,9 @@ public class Parser {
                     _hotel.addResponsibility(components[1], responsibility);
                 }
             }
-        } catch (excCore1 | excpCore      2 |
+        } catch (excCore1 | excpCore       2 |
                 
+            
             
             
                 ...) {
@@ -133,7 +135,8 @@ public class Parser {
             String name = components[2];
             String[] speciesIds = components.length == 4 ? components[3].split(",") : new String[0];
             _hotel.registerVaccine(id, name, speciesIds);
-        } catch (excCore1 | excpCore      2 | 
+        } catch (excCore1 | excpCore       2 | 
+            
             
             
                 ...) {
@@ -150,8 +153,9 @@ public class Parser {
             String type = components[5];
 
             _hotel.createTree(id, name, type, age, diff);
-        } catch (excCore1 | excpCore      2 |
+        } catch (excCore1 | excpCore       2 |
                 
+            
             
             
                 ...) {
@@ -174,8 +178,9 @@ public class Parser {
 
                 }
             }
-        } catch (excCore1 | excpCore      2 |
+        } catch (excCore1 | excpCore       2 |
                 
+            
             
             
                 ...) {

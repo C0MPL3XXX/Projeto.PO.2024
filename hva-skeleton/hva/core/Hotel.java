@@ -15,6 +15,7 @@ public class Hotel implements Serializable {
     private HashMap<String, Species> species = new HashMap<>();
     private HashMap<String, Animal> animals = new HashMap<>();
     private HashMap<String, Employee> employees = new HashMap<>();
+    private HashMap<String, Vaccine> vaccines = new HashMap<>();
 
     // FIXME define contructor(s)
     public Hotel() {
@@ -39,6 +40,10 @@ public class Hotel implements Serializable {
 
     public HashMap<String, Species> getSpecies() {
         return species;
+    }
+
+    public HashMap<String, Vaccine> getVaccineRegister() {
+        return vaccines;
     }
 
     /**

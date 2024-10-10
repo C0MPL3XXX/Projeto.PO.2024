@@ -3,8 +3,8 @@ package hva.core;
 public class DeciduousTree extends Tree {
 
     //Constructor
-    public DeciduousTree(int a, int diffClean) {
-        super(a, diffClean);
+    public DeciduousTree(int age, int diffClean, String name, String id) {
+        super(age, diffClean, id, name);
     }
 
     @Override

@@ -3,8 +3,8 @@ package hva.core;
 public class EvergreenTree extends Tree {
 
     //Constructor
-    public EvergreenTree(int a, int diffClean) {
-        super(a, diffClean);
+    public EvergreenTree(int a, int diffClean, String id, String name) {
+        super(a, diffClean, id, name);
     }
 
     @Override

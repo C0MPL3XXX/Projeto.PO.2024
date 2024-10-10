@@ -1,8 +1,6 @@
 package hva.core;
 
-import java.io.Serializable;
-
-public abstract class Tree implements Serializable {
+public abstract class Tree extends HotelEntity {
 
     //Atributes
     protected Season season;
@@ -11,12 +9,12 @@ public abstract class Tree implements Serializable {
     protected int seasonsPassed;
 
     // Constructor
-    public Tree(int age, int diffClean) {
+    public Tree(int age, int diffClean, String id, String name) {
+        super(id, name);
         this.age = age;
         this.difficultyClean = diffClean;
     }
 
-    // Getters
     //Methods
     void nextSeasonCall() {
         this.season = season.nextSeason();

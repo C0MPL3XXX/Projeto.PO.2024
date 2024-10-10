@@ -1,26 +1,22 @@
 package hva.core;
 
-import java.io.Serializable;
 import java.util.HashSet;
 
-public abstract class Employee implements Serializable {
+public abstract class Employee extends HotelEntity {
 
     //Atributes
     protected Hotel hotel;
-    protected String uniqueId;
-    protected String name;
     protected HashSet<String> responsibilities = new HashSet<>();
 
     //Constructor
     public Employee(String uniqueId, String name, Hotel hotel) {
-        this.uniqueId = uniqueId;
-        this.name = name;
+        super(name, name);
         this.hotel = hotel;
     }
 
-    //Getters
-    public String getUniqueId() {
-        return uniqueId;
+    //Getter
+    public HashSet<String> getResponsibilities() {
+        return responsibilities;
     }
 
     //Methods

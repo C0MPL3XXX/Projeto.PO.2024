@@ -1,21 +1,19 @@
 package hva.core;
 
-import java.io.Serializable;
 import java.util.*;
 
-public class Animal implements Serializable {
+public class Animal extends HotelEntity {
 
     //Atributes
     private String uniqueId;
     private String name;
-    private ArrayList<String> health = new ArrayList<String>();
+    private ArrayList<VaccinationResults> health = new ArrayList<>();
     private Habitat currentHabitat;
     private Species species;
 
     //Constructor
-    public Animal(String id, String n, Habitat habitat, Species s) {
-        this.uniqueId = id;
-        this.name = n;
+    public Animal(String id, String name, Habitat habitat, Species s) {
+        super(id, name);
         this.currentHabitat = habitat;
         this.species = s;
     }
@@ -25,8 +23,8 @@ public class Animal implements Serializable {
         return this.species;
     }
 
-    public String getUniqueId() {
-        return this.uniqueId;
+    public ArrayList<VaccinationResults> getHealth() {
+        return health;
     }
 
     // Methods
@@ -47,11 +45,12 @@ public class Animal implements Serializable {
     int computeSatisfaction() {     // Usado para saber a satisfação de um animal
         int satisfaction = 20 + (3 * this.sameSpecies()) - (2 * this.difSpecies())
                 + (this.currentHabitat.getArea() / this.currentHabitat.getAnimals().size())
-                + this.currentHabitat.getSpeciesImpact().get(this.getSpecies().getId()).intValue(); // Igual à formula no enunciado, usando varios metados
+                + this.currentHabitat.getSpeciesImpact().get(this.getSpecies().getId()); // Igual à formula no enunciado, usando varios metados
 
         return satisfaction;
     }
 
+    @Override
     public String toString() { // Mostra informação do animal em string que pode ser usado para um print
         if (this.health.isEmpty()) {
             return "ANIMAL|" + this.uniqueId + "|" + this.name + "|" + this.getSpecies().getId()
