@@ -10,7 +10,7 @@ public abstract class Employee extends HotelEntity {
 
     //Constructor
     public Employee(String uniqueId, String name, Hotel hotel) {
-        super(name, name);
+        super(uniqueId, name);
         this.hotel = hotel;
     }
 
