@@ -30,7 +30,7 @@ class DoOpenFile extends Command<HotelManager> {
     }
 
     try {
-      _receiver.load(Prompt.openFile());
+      _receiver.load(Form.requestString(Prompt.openFile()));
     } catch (UnavailableFileException e) {
       throw new FileOpenFailedException(e);
     }

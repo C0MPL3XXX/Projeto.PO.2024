@@ -1,6 +1,8 @@
 package hva.core;
 
-public abstract class HotelEntity {
+import java.io.Serializable;
+
+public abstract class HotelEntity implements Serializable {
 
     //Atributes every Entity has to have
     private final String id;

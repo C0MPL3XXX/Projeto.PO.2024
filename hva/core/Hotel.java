@@ -3,7 +3,7 @@ package hva.core;
 import hva.app.exception.*;
 import hva.core.exception.*;
 import java.io.*;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class Hotel implements Serializable {
 
@@ -14,12 +14,12 @@ public class Hotel implements Serializable {
 
     // FIXME define attributes
     private Season season;
-    private HashMap<String, Habitat> habitats = new HashMap<>();
-    private HashMap<String, Species> species = new HashMap<>();
-    private HashMap<String, Animal> animals = new HashMap<>();
-    private HashMap<String, Employee> employees = new HashMap<>();
-    private HashMap<String, Vaccine> vaccines = new HashMap<>();
-    private HashMap<String, Tree> trees = new HashMap<>();
+    private TreeMap<String, Habitat> habitats = new TreeMap<>();
+    private TreeMap<String, Species> species = new TreeMap<>();
+    private TreeMap<String, Animal> animals = new TreeMap<>();
+    private TreeMap<String, Employee> employees = new TreeMap<>();
+    private TreeMap<String, Vaccine> vaccines = new TreeMap<>();
+    private TreeMap<String, Tree> trees = new TreeMap<>();
 
     // FIXME define contructor(s)
     public Hotel() {
@@ -37,11 +37,11 @@ public class Hotel implements Serializable {
         return habitats.get(id);
     }
 
-    public HashMap<String, Habitat> getHabitats() {
+    public TreeMap<String, Habitat> getHabitats() {
         return habitats;
     }
 
-    public HashMap<String, Animal> getAnimals() {
+    public TreeMap<String, Animal> getAnimals() {
         return animals;
     }
 
@@ -49,11 +49,11 @@ public class Hotel implements Serializable {
         return species.get(id);
     }
 
-    public HashMap<String, Species> getSpecies() {
+    public TreeMap<String, Species> getSpecies() {
         return species;
     }
 
-    public HashMap<String, Vaccine> getVaccines() {
+    public TreeMap<String, Vaccine> getVaccines() {
         return vaccines;
     }
 
@@ -61,7 +61,7 @@ public class Hotel implements Serializable {
         return trees.get(id);
     }
 
-    public HashMap<String, Employee> getEmployees(){
+    public TreeMap<String, Employee> getEmployees(){
         return employees;
     }
 
@@ -91,6 +91,8 @@ public class Hotel implements Serializable {
 
     public void registerSpecies(String id, String name) {
         species.put(id, new Species(id, name));
+
+        setChanged(true);
     }
 
     public void registerAnimal(String id, String name, String habitatId, String speciesId) throws DuplicateAnimalKeyException {
@@ -98,8 +100,12 @@ public class Hotel implements Serializable {
             throw new DuplicateAnimalKeyException(id);
         }
 
-        Animal animal = animals.put(id, new Animal(id, name, findHabitat(habitatId), findSpecies(speciesId)));
+        Animal animal = new Animal(id, name, findHabitat(habitatId), findSpecies(speciesId));
+
+        animals.put(id, animal);
         species.get(speciesId).addAnimal(animal);
+
+        setChanged(true);
     }
 
     public void registerEmployee(String uniqueId, String name, String empType) throws DuplicateEmployeeKeyException {
@@ -107,19 +113,16 @@ public class Hotel implements Serializable {
             throw new DuplicateEmployeeKeyException(uniqueId);
         }
 
-        Employee employee = switch (uniqueId) {
+        Employee employee = switch (empType) {
             case "VET" ->
                 new Veterinarian(uniqueId, name, this);
             case "TRT" ->
                 new Zookeeper(uniqueId, name, this);
-            default ->
-                null;
+            default -> throw new IllegalArgumentException();
         };
 
-        if (employee != null) {
-            employees.put(uniqueId, employee);
-
-        }
+        employees.put(uniqueId, employee);
+        setChanged(true);
     }
 
     public void registerVaccine(String id, String name, String[] speciesIds) throws DuplicateVaccineKeyException, UnknownSpeciesKeyException {
@@ -134,6 +137,8 @@ public class Hotel implements Serializable {
         }
 
         vaccines.put(id, new Vaccine(id, name, speciesIds));
+
+        setChanged(true);
     }
 
     public void createTree(String id, String name, String type, int age, int diff) throws DuplicateTreeKeyException {
@@ -151,6 +156,8 @@ public class Hotel implements Serializable {
         if (tree != null) {
             trees.put(id, tree);
         }
+
+        setChanged(true);
     }
 
     public Habitat registerHabitat(String id, String name, int area) throws DuplicateHabitatKeyException {
@@ -158,6 +165,12 @@ public class Hotel implements Serializable {
             throw new DuplicateHabitatKeyException(id);
         }
 
-        return habitats.put(id, new Habitat(id, name, area));
+        Habitat habitat = new Habitat(id, name, area);
+
+        habitats.put(id, habitat);
+
+        setChanged(true);
+
+        return habitat;
     }
 }
