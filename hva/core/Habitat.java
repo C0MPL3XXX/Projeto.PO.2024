@@ -86,4 +86,10 @@ public class Habitat extends HotelEntity implements Serializable {
         }
         return this.area + (3 * animals.size()) + totalWorkTrees;
     }
+
+    @Override
+    public String toString() { // Mostra informação do animal em string que pode ser usado para um print
+            return "HABITAT|" + getId() + "|" + getName() + "|" + getArea()
+                    + "|" + trees.size(); 
+    }
 }

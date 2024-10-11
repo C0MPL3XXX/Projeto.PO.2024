@@ -33,17 +33,16 @@ public class Hotel implements Serializable {
         return hasChanged;
     }
 
-    // FIXME define more methods
-    public void addAnimal(String idA, String name, String idHab, String idSpe) {
-
-    }
-
     public Habitat findHabitat(String id) {
         return habitats.get(id);
     }
 
     public HashMap<String, Habitat> getHabitats() {
         return habitats;
+    }
+
+    public HashMap<String, Animal> getAnimals() {
+        return animals;
     }
 
     public Species findSpecies(String id) {
@@ -54,7 +53,7 @@ public class Hotel implements Serializable {
         return species;
     }
 
-    public HashMap<String, Vaccine> getVaccineRegister() {
+    public HashMap<String, Vaccine> getVaccines() {
         return vaccines;
     }
 
@@ -62,7 +61,15 @@ public class Hotel implements Serializable {
         return trees.get(id);
     }
 
-    void addResponsibility(String id, String responsibility) {
+    public HashMap<String, Employee> getEmployees(){
+        return employees;
+    }
+
+    void addResponsibility(String id, String responsibility) throws NoResponsibilityException {
+        if (!species.containsKey(responsibility) && !animals.containsKey(responsibility)) {
+            throw new NoResponsibilityException(id, responsibility);
+        }
+
         employees.get(id).addResponsability(responsibility);
     }
 

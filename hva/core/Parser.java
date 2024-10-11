@@ -1,15 +1,10 @@
 package hva.core;
 
 import hva.app.exception.*;
-import java.io.IOException;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.Reader;
-
-import java.util.Collection;
-import java.util.ArrayList;
-
 import hva.core.exception.UnrecognizedEntryException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 // FIXME add other imports if needed
 /**
@@ -92,14 +87,10 @@ public class Parser {
 
     // Parse a line with format ESPÉCIE|id|nome
     private void parseSpecies(String[] components) throws UnrecognizedEntryException {
-        try {
-            String id = components[1];
-            String name = components[2];
+        String id = components[1];
+        String name = components[2];
 
-            _hotel.registerSpecies(id, name);
-        } catch (UnknownSpeciesKeyException e) {
-            throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
-        }
+        _hotel.registerSpecies(id, name);
     }
 
     // Parse a line with format TRATADOR|id|nome|idHabitat1,...,idHabitatN or
@@ -122,7 +113,7 @@ public class Parser {
     }
 
     // Parse a line with format VACINA|id|nome|idEspécie1,...,idEspécieN
-    private void parseVaccine(String[] components) {
+    private void parseVaccine(String[] components) throws UnrecognizedEntryException {
         try {
             String id = components[1];
             String name = components[2];
