@@ -37,23 +37,23 @@ public class Habitat implements Serializable {
 
     // Methods
     void addEmployee(Zookeeper z) {
-        employees.put(z.getUniqueId(), z);
+        employees.put(z.getId(), z);
     }
 
     void removeEmployee(Zookeeper z) {
-        employees.remove(z.getUniqueId());
+        employees.remove(z.getId());
     }
 
     void add(Animal a) {
-        animals.put(a.getUniqueId(), a);
+        animals.put(a.getId(), a);
         if (speciesImpact.containsKey(a.getSpecies().getName()) == false) {
             speciesImpact.put(a.getSpecies().getName(), 0);
         }
     }
 
     void remove(Animal a) {
-        if (animals.containsKey(a.getUniqueId())) {
-            animals.remove(a.getUniqueId());
+        if (animals.containsKey(a.getId())) {
+            animals.remove(a.getId());
             boolean remove = true;
             for (Animal b : animals.values()) {
                 if (a.getSpecies() == b.getSpecies()) {

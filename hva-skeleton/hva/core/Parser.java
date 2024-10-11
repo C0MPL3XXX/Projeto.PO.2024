@@ -1,5 +1,6 @@
 package hva.core;
 
+import hva.app.exception.*;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -84,16 +85,12 @@ public class Parser {
             String speciesId = components[3];
 
             _hotel.registerAnimal(id, name, habitatId, speciesId);
-        } catch (excCore1 | excpCore       2 |
-                
-            
-            
-            
-                ...) {
-      throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage);
-            }
+        } catch (DuplicateAnimalKeyException e) {
+            throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage);
         }
-        // Parse a line with format ESPÉCIE|id|nome
+    }
+    // Parse a line with format ESPÉCIE|id|nome
+
     private void parseSpecies(String[] components) throws UnrecognizedEntryException {
         try {
             String id = components[1];
@@ -116,34 +113,27 @@ public class Parser {
 
             if (components.length == 4) {
                 for (String responsibility : components[3].split(",")) {
-                    _hotel.addResponsibility(components[1], responsibility);
+                    _hotel.addResponsibility(id, responsibility);
                 }
             }
-        } catch (excCore1 | excpCore       2 |
-                
-            
-            
-            
-                ...) {
-      throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage);
-            }
+        } catch (NoResponsibilityException | DuplicateEmployeeKeyException e) {
+            throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage);
         }
-        // Parse a line with format VACINA|id|nome|idEspécie1,...,idEspécieN
-    private void parseVaccine(String[] components, String empType) {
+    }
+    // Parse a line with format VACINA|id|nome|idEspécie1,...,idEspécieN
+
+    private void parseVaccine(String[] components) {
         try {
             String id = components[1];
             String name = components[2];
             String[] speciesIds = components.length == 4 ? components[3].split(",") : new String[0];
             _hotel.registerVaccine(id, name, speciesIds);
-        } catch (excCore1 | excpCore       2 | 
-            
-            
-            
-                ...) {
-      throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage);
-            }
+        } catch (DuplicateVaccineKeyException | UnknownSpeciesKeyException e) {
+            throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage);
         }
-        // Parse a line with format ÁRVORE|id|nome|idade|dificuldade|tipo
+    }
+    // Parse a line with format ÁRVORE|id|nome|idade|dificuldade|tipo
+
     private void parseTree(String[] components, String line) throws UnrecognizedEntryException {
         try {
             String id = components[1];
@@ -153,8 +143,9 @@ public class Parser {
             String type = components[5];
 
             _hotel.createTree(id, name, type, age, diff);
-        } catch (excCore1 | excpCore       2 |
+        } catch (excCore1 | excpCore        2 |
                 
+            
             
             
             
@@ -178,8 +169,9 @@ public class Parser {
 
                 }
             }
-        } catch (excCore1 | excpCore       2 |
+        } catch (excCore1 | excpCore        2 |
                 
+            
             
             
             

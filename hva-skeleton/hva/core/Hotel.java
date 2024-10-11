@@ -1,5 +1,6 @@
 package hva.core;
 
+import hva.app.exception.*;
 import hva.core.exception.*;
 import java.io.*;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ public class Hotel implements Serializable {
     private HashMap<String, Animal> animals = new HashMap<>();
     private HashMap<String, Employee> employees = new HashMap<>();
     private HashMap<String, Vaccine> vaccines = new HashMap<>();
+    private HashMap<String, Tree> trees = new HashMap<>();
 
     // FIXME define contructor(s)
     public Hotel() {
@@ -46,6 +48,10 @@ public class Hotel implements Serializable {
         return vaccines;
     }
 
+    void addResponsibility(String id, String responsibility) {
+        employees.get(id).addResponsability(responsibility);
+    }
+
     /**
      * Read text input file and create corresponding domain entities.
      *
@@ -66,28 +72,11 @@ public class Hotel implements Serializable {
                     registerEntry(fields);
                 } catch (UnknownDataException | PublicationExistsException | UnknownAgentException | AgentExistsException
                         | InvalidIdentifierException e) {
-                    // DAVID should not happen
                     e.printStackTrace();
                 }
             }
         } catch (IOException e1) {
             throw new ImportFileException();
-        }
-    }
-
-    public void registerEntry(String... fields) throws UnknownDataException, PublicationExistsException,
-            UnknownAgentException, AgentExistsException, InvalidIdentifierException {
-        switch (fields[0]) {
-            case "ESPÉCIE" ->
-                registerSpecies(fields);
-            case "ANIMAL" ->
-                registerAnimal(fields);
-            case "VETERINÁRIO", "TRATADOR" ->
-                registerPublication(fields);
-            case "ÁRVORE" ->
-                registerConnection(fields);
-            default ->
-                throw new UnknownDataException(fields[0]);
         }
     }
 
@@ -100,8 +89,11 @@ public class Hotel implements Serializable {
         this.species.put(species.getId(), species);
     }
 
-    public void registerAnimal(String id, String name, Habitat habitat, Species species) {
-        Animal animal = new Animal(id, name, habitat, species);
+    public void registerAnimal(String id, String name, String habitatId, String speciesId) throws DuplicateAnimalKeyException {
+        if (animals.containsKey(id)) {
+            throw new DuplicateAnimalKeyException(id);
+        }
+        Animal animal = new Animal(id, name, findHabitat(habitatId), findSpecies(speciesId));
         addAnimal(animal);
     }
 
@@ -110,23 +102,39 @@ public class Hotel implements Serializable {
         animal.getSpecies().getAnimals().put(animal.getId(), animal);
     }
 
-    public void registerEmployee(String uniqueId, String name, Hotel hotel) {
+    public void registerEmployee(String uniqueId, String name, String empType) throws DuplicateEmployeeKeyException {
+        if (employees.containsKey(uniqueId)) {
+            throw new DuplicateEmployeeKeyException(uniqueId);
+        }
         Employee employee = switch (uniqueId) {
-            case "VETERINÁRIO" ->
-                new Veterinarian(uniqueId, name, hotel);
-            case "TRATADOR" ->
-                new Zookeeper(uniqueId, name, hotel);
+            case "VET" ->
+                new Veterinarian(uniqueId, name, this);
+            case "TRT" ->
+                new Zookeeper(uniqueId, name, this);
+            default ->
+                null;
         };
+        if (employee != null) {
+            employees.put(uniqueId, employee);
 
-        if (fields.length) {
-             >= 4 
-        
         }
-        {
-            adicionar as responsabilidades do {
-                field[3]   
-            }  ao employee
+    }
+
+    public void registerVaccine(String id, String name, String[] speciesIds) throws DuplicateVaccineKeyException, UnknownSpeciesKeyException {
+        if (vaccines.containsKey(id)) {
+            throw new DuplicateVaccineKeyException(id);
         }
-        registerEmployee(employee);
+        for (String speciesId : speciesIds) {
+            if (!species.containsKey(speciesId)) {
+                throw new UnknownSpeciesKeyException(speciesId);
+            }
+        }
+    }
+
+    public void createTree(String id, String name, String type, int age, int diff) throws DuplicateTreeKeyException {
+        if (trees.containsKey(id)) {
+            throw new DuplicateTreeKeyException(id);
+        }
+
     }
 }
