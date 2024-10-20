@@ -1,6 +1,5 @@
 package hva.core;
 
-import hva.app.exception.*;
 import hva.core.exception.UnrecognizedEntryException;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -79,7 +78,7 @@ public class Parser {
             String speciesId = components[3];
 
             _hotel.registerAnimal(id, name, habitatId, speciesId);
-        } catch (DuplicateAnimalKeyException e) {
+        } catch (Exception e) {
             throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
         }
     }
@@ -103,10 +102,10 @@ public class Parser {
 
             if (components.length == 4) {
                 for (String responsibility : components[3].split(",")) {
-                    _hotel.addResponsibility(id, responsibility);
+                    _hotel.addEmployeeResponsibility(id, responsibility);
                 }
             }
-        } catch (NoResponsibilityException | DuplicateEmployeeKeyException e) {
+        } catch (Exception e) {
             throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
         }
     }
@@ -118,7 +117,7 @@ public class Parser {
             String name = components[2];
             String[] speciesIds = components.length == 4 ? components[3].split(",") : new String[0];
             _hotel.registerVaccine(id, name, speciesIds);
-        } catch (DuplicateVaccineKeyException | UnknownSpeciesKeyException e) {
+        } catch (Exception e) {
             throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
         }
     }
@@ -132,8 +131,8 @@ public class Parser {
             int diff = Integer.parseInt(components[4]);
             String type = components[5];
 
-            _hotel.createTree(id, name, type, age, diff);
-        } catch (DuplicateTreeKeyException e) {
+            _hotel.registerTree(id, name, type, age, diff);
+        } catch (NumberFormatException e) {
             throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
         }
     }
@@ -145,17 +144,18 @@ public class Parser {
             String name = components[2];
             int area = Integer.parseInt(components[3]);
 
-            Habitat hab = _hotel.registerHabitat(id, name, area);
+            _hotel.registerHabitat(id, name, area);
 
             if (components.length == 5) {
 
                 String[] listOfTrees = components[4].split(",");
 
                 for (String treeKey : listOfTrees) {
-                    hab.addTree(_hotel.findTree(treeKey));
+                    
+                    _hotel.addTreeToHabitat(id, treeKey);
                 }
             }
-        } catch (DuplicateHabitatKeyException e) {
+        } catch (NumberFormatException e) {
             throw new UnrecognizedEntryException("Invalid entry: " + e.getMessage());
         }
     }

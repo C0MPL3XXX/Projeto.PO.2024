@@ -24,11 +24,11 @@ public abstract class Employee extends HotelEntity {
     }
 
     //Methods
-    abstract int accept(IEmployeeSatisfaction i);
+    abstract double calculateSatisfaction(IEmployeeSatisfaction i);
 
-    abstract void addResponsability(String h);
+    abstract void addResponsibility(String h);
 
-    abstract void removeResponsability(String h);
+    abstract void removeResponsibility(String h);
 
     @Override
     public abstract String toString();

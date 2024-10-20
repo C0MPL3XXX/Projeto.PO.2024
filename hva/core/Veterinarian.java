@@ -1,7 +1,10 @@
 package hva.core;
 
-public class Veterinarian extends Employee {
+import java.util.ArrayList;
 
+public class Veterinarian extends Employee {
+    //Atributes
+    private ArrayList<String> register = new ArrayList<>();
     //Constructor
     public Veterinarian(String id, String n, Hotel h) {
         super(id, n, h);
@@ -9,36 +12,33 @@ public class Veterinarian extends Employee {
 
     //Methods
     @Override
-    int accept(IEmployeeSatisfaction i) {
+    double calculateSatisfaction(IEmployeeSatisfaction i) {
         return i.calculate(this);
     }
 
     @Override
-    void addResponsability(String id) {
-        Species s = hotel.findSpecies(id);
-        responsibilities.add(s.getId());
-        s.addEmployee(this);
+    void addResponsibility(String id) {
+        responsibilities.add(id);
     }
 
     @Override
-    void removeResponsability(String id) {
-        Species s = hotel.findSpecies(id);
-        responsibilities.remove(s.getId());
-        s.removeEmployee(getId());
+    void removeResponsibility(String id) {
+        responsibilities.remove(id);
     }
 
     public int dano(Vaccine v, Animal a) {
         if (v.getVaccineSpecies().contains(a.getSpecies().getId())) {
             return -1;
         }
+
         String specieVaccine = v.getVaccineSpecies().get(0);
         for (String s : v.getVaccineSpecies()) {
             if (s.length() > specieVaccine.length()) {
                 specieVaccine = s;
             }
         }
+        
         return bigger(specieVaccine, a.getSpecies().getId()).length() - sameCharacters(specieVaccine, a.getId());
-
     }
 
     int sameCharacters(String str1, String str2) {
@@ -73,11 +73,12 @@ public class Veterinarian extends Employee {
         } else {
             result = VaccinationResults.ERROR;
         }
-        VaccineApplication VaccineUsed = new VaccineApplication(result, this, a, v);
-        if (VaccineUsed.isCorrect()) {
+        VaccineApplication vaccineUsed = new VaccineApplication(result, this, a, v);
+        if (vaccineUsed.isCorrect()) {
             a.getHealth().add(result);
-            v.addUsage(VaccineUsed);
+            v.addUsage(vaccineUsed);
         }
+        register.add("REGISTO-VACINA|" + v.getId() + "|" + this.getId() + "|" + a.getSpecies().getId());
     }
 
     @Override
@@ -87,5 +88,8 @@ public class Veterinarian extends Employee {
         } else {
             return "VET|" + getId() + "|" + getName() + "|" + responsibilities;
         }
+    }
+    public ArrayList<String> getRegister(){
+        return register;
     }
 }

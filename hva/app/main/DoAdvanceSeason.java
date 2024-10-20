@@ -2,7 +2,6 @@ package hva.app.main;
 
 import hva.core.HotelManager;
 import pt.tecnico.uilib.menus.Command;
-import pt.tecnico.uilib.menus.CommandException;
 //FIXME add more imports if needed
 
 /**
@@ -11,11 +10,13 @@ import pt.tecnico.uilib.menus.CommandException;
 class DoAdvanceSeason extends Command<HotelManager> {
   DoAdvanceSeason(HotelManager receiver) {
     super(Label.ADVANCE_SEASON, receiver);
-    //FIXME add command fields
   }
 
   @Override
   protected final void execute() {
-    //FIXME implement command
+    int seasonIndex = _receiver.getHotel().advanceSeason();
+
+    _display.add(seasonIndex);
+    _display.display();
   }
 }

@@ -2,6 +2,7 @@ package hva.app.search;
 
 import hva.core.Hotel;
 import hva.app.exception.UnknownVeterinarianKeyException;
+import pt.tecnico.uilib.forms.Form;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
 
@@ -20,5 +21,12 @@ class DoShowMedicalActsByVeterinarian extends Command<Hotel> {
   @Override
   protected void execute() throws CommandException {
     //FIXME implement command
+    String id = Form.requestString(hva.app.employee.Prompt.employeeKey());
+    if(!_receiver.containsEmployee(id)){
+      throw new UnknownVeterinarianKeyException(id);
+    }
+    else {
+      _display.addAll(_receiver.)
+    }
   }
 }

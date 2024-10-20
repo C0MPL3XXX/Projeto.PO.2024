@@ -15,7 +15,7 @@ class DoShowAllEmployees extends Command<Hotel> {
   
   @Override
   protected void execute() {
-    _display.addAll(_receiver.getEmployees().values());
+    _display.addAll(_receiver.getEmployees());
     _display.display();
   }
 }

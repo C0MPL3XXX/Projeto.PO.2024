@@ -1,8 +1,10 @@
 package hva.core;
 
-import hva.app.exception.*;
 import hva.core.exception.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class Hotel implements Serializable {
@@ -12,17 +14,25 @@ public class Hotel implements Serializable {
 
     private boolean hasChanged = false;
 
-    // FIXME define attributes
     private Season season = Season.Spring;
-    private TreeMap<String, Habitat> habitats = new TreeMap<>();
-    private TreeMap<String, Species> species = new TreeMap<>();
-    private TreeMap<String, Animal> animals = new TreeMap<>();
-    private TreeMap<String, Employee> employees = new TreeMap<>();
-    private TreeMap<String, Vaccine> vaccines = new TreeMap<>();
-    private TreeMap<String, Tree> trees = new TreeMap<>();
+    private final Map<String, Habitat> habitats = new TreeMap<>();
+    private final Map<String, Species> species = new TreeMap<>();
+    private final Map<String, Animal> animals = new TreeMap<>();
+    private final Map<String, Employee> employees = new TreeMap<>();
+    private final Map<String, Vaccine> vaccines = new TreeMap<>();
+    private final Map<String, Tree> trees = new TreeMap<>();
 
-    // FIXME define contructor(s)
-    public Hotel() {
+    /**
+     * Read text input file and create corresponding domain entities.
+     *
+     * @param filename name of the text input file
+     * @throws UnrecognizedEntryException if some entry is not correct
+     * @throws IOException if there is an IO erro while processing the text file
+     *
+     */
+    void importFile(String name) throws UnrecognizedEntryException, IOException {
+        Parser parser = new Parser(this);
+        parser.parseFile(name);
     }
 
     public void setChanged(boolean val) {
@@ -33,60 +43,68 @@ public class Hotel implements Serializable {
         return hasChanged;
     }
 
-    public Habitat findHabitat(String id) {
-        return habitats.get(id);
+
+    public boolean containsAnimal(String key) {
+        return animals.containsKey(key);
     }
 
-    public TreeMap<String, Habitat> getHabitats() {
-        return habitats;
+    public boolean containsSpecies(String key) {
+        return species.containsKey(key);
     }
 
-    public TreeMap<String, Animal> getAnimals() {
-        return animals;
+    public boolean containsEmployee(String key) {
+        return employees.containsKey(key);
     }
 
-    public Species findSpecies(String id) {
-        return species.get(id);
+    public boolean containsHabitat(String key) {
+        return habitats.containsKey(key);
     }
 
-    public TreeMap<String, Species> getSpecies() {
-        return species;
+    public boolean containsTree(String key) {
+        return trees.containsKey(key);
     }
 
-    public TreeMap<String, Vaccine> getVaccines() {
-        return vaccines;
+    public boolean containsVaccine(String key) {
+        return vaccines.containsKey(key);
     }
 
-    public Tree findTree(String id) {
-        return trees.get(id);
+
+    public Collection<Animal> getAnimals() {
+        return animals.values();
     }
 
-    public TreeMap<String, Employee> getEmployees(){
-        return employees;
+    public Collection<Species> getSpecies() {
+        return species.values();
     }
 
-    void addResponsibility(String id, String responsibility) throws NoResponsibilityException {
-        if (!species.containsKey(responsibility) && !animals.containsKey(responsibility)) {
-            throw new NoResponsibilityException(id, responsibility);
-        }
-
-        employees.get(id).addResponsability(responsibility);
+    public Collection<Employee> getEmployees() {
+        return employees.values();
     }
 
-    /**
-     * Read text input file and create corresponding domain entities.
-     *
-     * @param filename name of the text input file
-     * @throws UnrecognizedEntryException if some entry is not correct
-     * @throws IOException if there is an IO erro while processing the text file
-     *
-     */
-    //void importFile(String filename) throws UnrecognizedEntryException, IOException /* FIXME maybe other exceptions */ {
-    //FIXME implement method
-    //}
-    void importFile(String name) throws UnrecognizedEntryException, IOException {
-        Parser parser = new Parser(this);
-        parser.parseFile(name);
+    public Collection<Habitat> getHabitats() {
+        return habitats.values();
+    }
+
+    public Collection<Vaccine> getVaccines() {
+        return vaccines.values();
+    }
+
+
+    public Collection<Animal> getAnimalsInHabitat(String habitatId) {
+        return habitats.get(habitatId).getAnimals();
+    }
+
+    public ArrayList<String> getVetRegister(String id){
+        return employees.get(id).getRegister(); 
+    }
+
+    public void registerAnimal(String id, String name, String habitatId, String speciesId) {
+        Animal animal = new Animal(id, name, habitats.get(habitatId), species.get(speciesId));
+
+        animals.put(id, animal);
+        species.get(speciesId).addAnimal(animal);
+
+        setChanged(true);
     }
 
     public void registerSpecies(String id, String name) {
@@ -95,82 +113,126 @@ public class Hotel implements Serializable {
         setChanged(true);
     }
 
-    public void registerAnimal(String id, String name, String habitatId, String speciesId) throws DuplicateAnimalKeyException {
-        if (animals.containsKey(id)) {
-            throw new DuplicateAnimalKeyException(id);
-        }
-
-        Animal animal = new Animal(id, name, findHabitat(habitatId), findSpecies(speciesId));
-
-        animals.put(id, animal);
-        species.get(speciesId).addAnimal(animal);
-
-        setChanged(true);
-    }
-
-    public void registerEmployee(String uniqueId, String name, String empType) throws DuplicateEmployeeKeyException {
-        if (employees.containsKey(uniqueId)) {
-            throw new DuplicateEmployeeKeyException(uniqueId);
-        }
-
+    public void registerEmployee(String id, String name, String empType) {
         Employee employee = switch (empType) {
             case "VET" ->
-                new Veterinarian(uniqueId, name, this);
+                new Veterinarian(id, name, this);
             case "TRT" ->
-                new Zookeeper(uniqueId, name, this);
+                new Zookeeper(id, name, this);
             default -> throw new IllegalArgumentException();
         };
 
-        employees.put(uniqueId, employee);
+        employees.put(id, employee);
         setChanged(true);
     }
 
-    public void registerVaccine(String id, String name, String[] speciesIds) throws DuplicateVaccineKeyException, UnknownSpeciesKeyException {
-        if (vaccines.containsKey(id)) {
-            throw new DuplicateVaccineKeyException(id);
-        }
-
-        for (String speciesId : speciesIds) {
-            if (!species.containsKey(speciesId)) {
-                throw new UnknownSpeciesKeyException(speciesId);
-            }
-        }
-
-        vaccines.put(id, new Vaccine(id, name, speciesIds));
-
-        setChanged(true);
-    }
-
-    public void createTree(String id, String name, String type, int age, int diff) throws DuplicateTreeKeyException {
-        if (trees.containsKey(id)) {
-            throw new DuplicateTreeKeyException(id);
-        }
-        Tree tree = switch (type) {
-            case "PERENE" ->
-                new EvergreenTree(age, diff, id, name);
-            case "CADUCA" ->
-                new DeciduousTree(age, diff, id, name);
-            default ->
-                null;
-        };
-        if (tree != null) {
-            trees.put(id, tree);
-        }
-
-        setChanged(true);
-    }
-
-    public Habitat registerHabitat(String id, String name, int area) throws DuplicateHabitatKeyException {
-        if (habitats.containsKey(id)) {
-            throw new DuplicateHabitatKeyException(id);
-        }
-
+    public void registerHabitat(String id, String name, int area) {
         Habitat habitat = new Habitat(id, name, area);
 
         habitats.put(id, habitat);
 
         setChanged(true);
+    }
 
-        return habitat;
+    public void registerVaccine(String id, String name, String[] speciesIds) {
+        vaccines.put(id, new Vaccine(id, name, speciesIds));
+
+        setChanged(true);
+    }
+
+    public String registerTree(String id, String name, String type, int age, int diff) {
+        Tree t = switch (type) {
+            case "PERENE" ->
+                new EvergreenTree(age, diff, id, name);
+            case "CADUCA" ->
+                new DeciduousTree(age, diff, id, name);
+            default -> throw new IllegalArgumentException();
+        };
+
+        setChanged(true);
+
+        trees.put(id, t);
+        return t.toString();
+    }
+
+
+    public int advanceSeason() {
+        season = season.nextSeason();
+
+        return season.ordinal();
+    }
+
+    public void addTreeToHabitat(String habitatId, String treeId) {
+        Habitat h = habitats.get(habitatId);
+        Tree t = trees.get(treeId);
+
+        h.addTree(t);
+    }
+
+    public void transferAnimal(String animalId, String habitatId) {
+        Animal a = animals.get(animalId);
+        Habitat h = habitats.get(habitatId);
+
+        a.getHabitat().removeAnimal(a);
+        h.addAnimal(a);
+        a.setHabitat(h);
+    }
+
+    public int calculateAnimalSatisfaction(String animalId) {
+        IAnimalSatisfaction c = new CalcAnimalSatisfaction();
+        Animal a = animals.get(animalId);
+
+        return (int)Math.round(a.computeSatisfaction(c));
+    }
+
+    public int calculateEmployeeSatisfaction(String employeeId) {
+        IEmployeeSatisfaction c = new CalcWorkerSatisfaction();
+        Employee e = employees.get(employeeId);
+
+        return (int)Math.round(e.calculateSatisfaction(c));
+    }
+
+    public int showGlobalSatisfaction() {
+        double total = 0;
+
+        IEmployeeSatisfaction calcSatisfactionWorker = new CalcWorkerSatisfaction();
+        for (Employee e : employees.values())
+        {
+            double s = e.calculateSatisfaction(calcSatisfactionWorker);
+            total += s;
+        }
+
+        IAnimalSatisfaction calcSatisfactionAnimal = new CalcAnimalSatisfaction();
+        for(Animal a : animals.values())
+        {
+            double s = a.computeSatisfaction(calcSatisfactionAnimal);
+            total += s;
+        }
+        return (int)Math.round(total);
+        
+    }
+
+    public void setHabitatArea(String habitatId, int area) {
+        habitats.get(habitatId).setArea(area);
+    }
+    
+    public void setHabitatSpeciesImpact(String habitatId, String specciesId, String impact) {
+        habitats.get(habitatId).setSpeciesImpact(specciesId, impact);
+    }
+
+    public Collection<Tree> getTreesInHabitat(String habitatId) {
+        return habitats.get(habitatId).getTrees();
+    }
+
+    public boolean employeeContainsResponsibility(String employeeKey, String responsibilityKey) {
+        return employees.get(employeeKey).getResponsibilities().contains(responsibilityKey);
+    }
+
+    public void addEmployeeResponsibility(String employeeKey, String responsibilityKey) {
+        employees.get(employeeKey).addResponsibility(responsibilityKey);
+    }
+
+    public void removeEmployeeResponsibility(String employeeKey, String responsibilityKey){
+        employees.get(employeeKey).removeResponsibility(responsibilityKey);
     }
 }

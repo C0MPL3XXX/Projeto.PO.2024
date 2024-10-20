@@ -14,5 +14,8 @@ class DoShowGlobalSatisfaction extends Command<HotelManager> {
   @Override
   protected final void execute() {
     //FIXME implement command
+    int globalSatisfaction = _receiver.getHotel().showGlobalSatisfaction();
+    _display.add(globalSatisfaction);
+    _display.display();
   }
 }

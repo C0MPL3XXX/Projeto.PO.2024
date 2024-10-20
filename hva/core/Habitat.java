@@ -1,16 +1,18 @@
 package hva.core;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Habitat extends HotelEntity implements Serializable {
 
     //Atributes
     private int area;
-    private HashMap<String, Animal> animals = new HashMap<>();
-    private HashMap<String, Tree> trees = new HashMap<>();
-    private HashMap<String, Integer> speciesImpact = new HashMap<>();
-    private HashMap<String, Employee> employees = new HashMap<>();
+    private final Map<String, Animal> animals = new HashMap<>();
+    private final Map<String, Tree> trees = new HashMap<>();
+    private final Map<String, Integer> speciesImpact = new HashMap<>();
+    private final Map<String, Employee> employees = new HashMap<>();
 
     //Constructor
     public Habitat(String uniqueId, String name, int area) {
@@ -19,19 +21,39 @@ public class Habitat extends HotelEntity implements Serializable {
     }
 
     // Getters
-    public HashMap<String, Animal> getAnimals() {
-        return animals;
+    public Collection<Animal> getAnimals() {
+        return animals.values();
     }
 
     public int getArea() {
         return area;
     }
 
-    public HashMap<String, Integer> getSpeciesImpact() {
+    public void setArea(int a) {
+        area = a;
+    }
+
+    public Map<String, Integer> getSpeciesImpact() {
         return speciesImpact;
     }
 
-    public HashMap<String, Employee> getEmployees() {
+    public Collection<Tree> getTrees() {
+        return trees.values();
+    }
+
+    public void setSpeciesImpact(String speciesId, String impact) {
+        
+        int impactNum = switch (impact) {
+            case "POS" -> 20;
+            case "NEG" -> -20;
+            case "NEU" -> 0;
+            default -> 0;
+        };
+
+        speciesImpact.put(speciesId, impactNum);
+    }
+
+    public Map<String, Employee> getEmployees() {
         return employees;
     }
 

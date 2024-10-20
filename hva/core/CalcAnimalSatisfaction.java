@@ -4,7 +4,7 @@ public class CalcAnimalSatisfaction implements IAnimalSatisfaction{
     
     int sameSpecies(Animal a) { //Passa por todos os animais no habitat e recorda quais são da mesma especie
         int same = 0;
-        for (Animal c : a.getHabitat().getAnimals().values()) {
+        for (Animal c : a.getHabitat().getAnimals()) {
             if (a.getSpecies().equals(c.getSpecies())) {
                 same += 1;
             }
@@ -17,8 +17,8 @@ public class CalcAnimalSatisfaction implements IAnimalSatisfaction{
     }
 
     @Override
-    public int calculate(Animal a){ 
-        int satisfaction = 20 + (3 * sameSpecies(a)) - (2 * difSpecies(a))
+    public double calculate(Animal a){ 
+        double satisfaction = 20 + (3 * sameSpecies(a)) - (2 * difSpecies(a))
         + (a.getHabitat().getArea() / a.getHabitat().getAnimals().size())
         + a.getHabitat().getSpeciesImpact().get(a.getSpecies().getId()); // Igual à formula no enunciado, usando varios metados
 

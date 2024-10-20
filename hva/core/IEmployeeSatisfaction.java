@@ -1,6 +1,6 @@
 package hva.core;
 
 public interface IEmployeeSatisfaction {
-    public int calculate(Veterinarian v);   
-    public int calculate(Zookeeper z); 
+    public double calculate(Veterinarian v);   
+    public double calculate(Zookeeper z); 
 }

@@ -9,20 +9,20 @@ public class Zookeeper extends Employee {
 
     //Methods
     @Override
-    int accept(IEmployeeSatisfaction i) {
+    double calculateSatisfaction(IEmployeeSatisfaction i) {
         return i.calculate(this);
     }
 
     @Override
-    void addResponsability(String id) {
+    void addResponsibility(String id) {
         Habitat h = hotel.findHabitat(id);
         responsibilities.add(h.getId());
         h.addEmployee(this);
     }
 
     @Override
-    void removeResponsability(String id) {
-        Habitat h = hotel.findHabitat(id);
+    void removeResponsibility(String id) {
+        Habitat h = hotel.getHabitat(id);
         responsibilities.remove(h.getId());
         h.removeEmployee(this);
     }

@@ -14,7 +14,7 @@ class DoShowAllAnimals extends Command<Hotel> {
   
   @Override
   protected final void execute() {
-    _display.addAll(_receiver.getAnimals().values());
+    _display.addAll(_receiver.getAnimals());
     _display.display();
   }
 }

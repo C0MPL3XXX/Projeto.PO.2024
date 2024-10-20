@@ -18,7 +18,7 @@ public class Animal extends HotelEntity {
 
     // Getters
     public Species getSpecies() {
-        return this.species;
+        return species;
     }
 
     public ArrayList<VaccinationResults> getHealth() {
@@ -26,12 +26,16 @@ public class Animal extends HotelEntity {
     }
 
     public Habitat getHabitat(){
-        return this.currentHabitat;
+        return currentHabitat;
+    }
+
+    public void setHabitat(Habitat h){
+        currentHabitat = h;
     }
 
     // Methods
 
-    int computeSatisfaction(IAnimalSatisfaction c) {     // Usado para saber a satisfação de um animal
+    double computeSatisfaction(IAnimalSatisfaction c) {     // Usado para saber a satisfação de um animal
        return c.calculate(this);
     }
 
@@ -43,11 +47,5 @@ public class Animal extends HotelEntity {
         }
         return "ANIMAL|" + getId() + "|" + getName() + "|" + getSpecies().getId()
                 + "|" + health + "|" + currentHabitat.getId();
-    }
-
-    private void transferTo(Habitat h) { // Muda de habitat
-        this.currentHabitat.removeAnimal(this);
-        h.addAnimal(this);
-        this.currentHabitat = h;
     }
 }

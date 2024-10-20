@@ -1,5 +1,5 @@
 package hva.core;
 
 public interface IAnimalSatisfaction {
-    public int calculate(Animal a);
+    public double calculate(Animal a);
 }

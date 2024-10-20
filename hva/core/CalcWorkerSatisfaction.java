@@ -2,9 +2,9 @@ package hva.core;
 
 public class CalcWorkerSatisfaction implements IEmployeeSatisfaction{
     @Override
-    public int calculate(Veterinarian v){
-        int total = 20;
-        for (Species s : v.getHotel().getSpecies().values()) {
+    public double calculate(Veterinarian v){
+        double total = 20;
+        for (Species s : v.getHotel().getSpecies()) {
             if (v.getResponsibilities().contains(s.getId())) {
                 total -= s.getAnimals().size() / s.getEmployees().size();
             }
@@ -12,9 +12,9 @@ public class CalcWorkerSatisfaction implements IEmployeeSatisfaction{
         return total;
     }
     @Override
-    public int calculate(Zookeeper z){
-        int total = 300;
-        for (Habitat h : z.getHotel().getHabitats().values()) {
+    public double calculate(Zookeeper z){
+        double total = 300;
+        for (Habitat h : z.getHotel().getHabitats()) {
             if (z.getResponsibilities().contains(h.getId())) {
                 total -= h.workHabitat() / h.getEmployees().size();
             }

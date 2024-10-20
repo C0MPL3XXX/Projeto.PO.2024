@@ -1,7 +1,8 @@
 package hva.app.habitat;
 
-import hva.core.Hotel;
 import hva.app.exception.DuplicateHabitatKeyException;
+import hva.core.Hotel;
+import pt.tecnico.uilib.forms.Form;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
 //FIXME add more imports if needed
@@ -18,6 +19,14 @@ class DoRegisterHabitat extends Command<Hotel> {
   
   @Override
   protected void execute() throws CommandException {
-    //FIXME implement command
+    String habitatId = Form.requestString(Prompt.habitatKey());
+    if (_receiver.containsHabitat(habitatId)) {
+      throw new DuplicateHabitatKeyException(habitatId);
+    }
+
+    String habitatName = Form.requestString(Prompt.habitatName());
+    int habitatArea = Form.requestInteger(Prompt.habitatArea());
+
+    _receiver.registerHabitat(habitatId, habitatName, habitatArea);
   }
 }

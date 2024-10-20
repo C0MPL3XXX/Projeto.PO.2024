@@ -15,7 +15,7 @@ class DoShowAllHabitats extends Command<Hotel> {
   
   @Override
   protected void execute() {
-    _display.addAll(_receiver.getHabitats().values());
+    _display.addAll(_receiver.getHabitats());
     _display.display();
   }
 }
