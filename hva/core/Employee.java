@@ -19,8 +19,12 @@ public abstract class Employee extends HotelEntity {
         return responsibilities;
     }
 
+    public Hotel getHotel(){
+        return hotel;
+    }
+
     //Methods
-    abstract int computeSatisfaction();
+    abstract int accept(IEmployeeSatisfaction i);
 
     abstract void addResponsability(String h);
 

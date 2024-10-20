@@ -9,14 +9,8 @@ public class Veterinarian extends Employee {
 
     //Methods
     @Override
-    int computeSatisfaction() {
-        int total = 20;
-        for (Species s : hotel.getSpecies().values()) {
-            if (responsibilities.contains(s.getId())) {
-                total -= s.getAnimals().size() / s.getEmployees().size();
-            }
-        }
-        return total;
+    int accept(IEmployeeSatisfaction i) {
+        return i.calculate(this);
     }
 
     @Override

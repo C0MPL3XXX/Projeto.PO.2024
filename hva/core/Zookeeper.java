@@ -9,14 +9,8 @@ public class Zookeeper extends Employee {
 
     //Methods
     @Override
-    int computeSatisfaction() {
-        int total = 300;
-        for (Habitat h : hotel.getHabitats().values()) {
-            if (responsibilities.contains(h.getId())) {
-                total -= h.workHabitat() / h.getEmployees().size();
-            }
-        }
-        return total;
+    int accept(IEmployeeSatisfaction i) {
+        return i.calculate(this);
     }
 
     @Override

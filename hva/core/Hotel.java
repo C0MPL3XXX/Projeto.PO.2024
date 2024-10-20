@@ -13,7 +13,7 @@ public class Hotel implements Serializable {
     private boolean hasChanged = false;
 
     // FIXME define attributes
-    private Season season;
+    private Season season = Season.Spring;
     private TreeMap<String, Habitat> habitats = new TreeMap<>();
     private TreeMap<String, Species> species = new TreeMap<>();
     private TreeMap<String, Animal> animals = new TreeMap<>();

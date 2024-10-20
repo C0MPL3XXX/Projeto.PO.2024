@@ -25,27 +25,14 @@ public class Animal extends HotelEntity {
         return health;
     }
 
+    public Habitat getHabitat(){
+        return this.currentHabitat;
+    }
+
     // Methods
-    int sameSpecies() { //Passa por todos os animais no habitat e recorda quais são da mesma especie
-        int same = 0;
-        for (Animal c : currentHabitat.getAnimals().values()) {
-            if (this.species.equals(c.getSpecies())) {
-                same += 1;
-            }
-        }
-        return same;
-    }
 
-    public int difSpecies() {
-        return this.currentHabitat.getAnimals().size() - this.sameSpecies(); // Usando sameSpecies arranja-se difSpecies mais facilmente em conjunto da população
-    }
-
-    int computeSatisfaction() {     // Usado para saber a satisfação de um animal
-        int satisfaction = 20 + (3 * this.sameSpecies()) - (2 * this.difSpecies())
-                + (this.currentHabitat.getArea() / this.currentHabitat.getAnimals().size())
-                + this.currentHabitat.getSpeciesImpact().get(this.getSpecies().getId()); // Igual à formula no enunciado, usando varios metados
-
-        return satisfaction;
+    int computeSatisfaction(IAnimalSatisfaction c) {     // Usado para saber a satisfação de um animal
+       return c.calculate(this);
     }
 
     @Override
