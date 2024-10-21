@@ -20,7 +20,7 @@ class DoRegisterVaccine extends Command<Hotel> {
   @Override
   protected final void execute() throws CommandException {
     String vaccineId = Form.requestString(Prompt.vaccineKey());
-    if (_receiver.findVaccine(vaccineId) != null) {
+    if (_receiver.containsVaccine(vaccineId)) {
       throw new DuplicateVaccineKeyException(vaccineId);
     }
 
