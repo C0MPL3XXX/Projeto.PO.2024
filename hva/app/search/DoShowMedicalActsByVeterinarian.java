@@ -1,7 +1,7 @@
 package hva.app.search;
 
-import hva.core.Hotel;
 import hva.app.exception.UnknownVeterinarianKeyException;
+import hva.core.Hotel;
 import pt.tecnico.uilib.forms.Form;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
@@ -26,7 +26,8 @@ class DoShowMedicalActsByVeterinarian extends Command<Hotel> {
       throw new UnknownVeterinarianKeyException(id);
     }
     else {
-      _display.addAll(_receiver.)
+      _display.addAll(_receiver.getVetWork(id));
+      _display.display();
     }
   }
 }

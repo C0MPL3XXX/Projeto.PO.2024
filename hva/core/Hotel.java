@@ -4,6 +4,7 @@ import hva.core.exception.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -21,6 +22,7 @@ public class Hotel implements Serializable {
     private final Map<String, Employee> employees = new TreeMap<>();
     private final Map<String, Vaccine> vaccines = new TreeMap<>();
     private final Map<String, Tree> trees = new TreeMap<>();
+    private final ArrayList<String> vaccinesUsed = new ArrayList<>();
 
     /**
      * Read text input file and create corresponding domain entities.
@@ -90,12 +92,24 @@ public class Hotel implements Serializable {
     }
 
 
-    public Collection<Animal> getAnimalsInHabitat(String habitatId) {
-        return habitats.get(habitatId).getAnimals();
+    public HashSet<String> getAnimalsInHabitat(String habitatId) {
+        HashSet<String> habitatAnimals = new HashSet<>();
+        for(Animal a: habitats.get(habitatId).getAnimals()){
+                habitatAnimals.add(a.toString());
+        }
+        return habitatAnimals;
     }
 
-    public ArrayList<String> getVetRegister(String id){
-        return employees.get(id).getRegister(); 
+    public ArrayList<String> getVetWork(String id){
+        return employees.get(id).getWorkDone(); 
+    }
+
+    public ArrayList<VaccinationResults> getHealth(String id){
+        return animals.get(id).getHealth();
+    }
+
+    public ArrayList<String> getVaccinesUsed(){
+        return vaccinesUsed;
     }
 
     public void registerAnimal(String id, String name, String habitatId, String speciesId) {
@@ -169,6 +183,10 @@ public class Hotel implements Serializable {
         h.addTree(t);
     }
 
+    public void addVaccineUsage(String s){
+        vaccinesUsed.add(s);
+    }
+
     public void transferAnimal(String animalId, String habitatId) {
         Animal a = animals.get(animalId);
         Habitat h = habitats.get(habitatId);
@@ -234,5 +252,9 @@ public class Hotel implements Serializable {
 
     public void removeEmployeeResponsibility(String employeeKey, String responsibilityKey){
         employees.get(employeeKey).removeResponsibility(responsibilityKey);
+    }
+
+    public void vaccinateAnimal(Animal a, Vaccine vaccine, Veterinarian vet){
+        vet.vaccinate(a, vaccine);
     }
 }

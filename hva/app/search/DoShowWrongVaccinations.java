@@ -18,5 +18,7 @@ class DoShowWrongVaccinations extends Command<Hotel> {
   @Override
   protected void execute() throws CommandException {
     //FIXME implement command
+    _display.addAll(_receiver.getVaccinesUsed());
+    _display.display();
   }
 }

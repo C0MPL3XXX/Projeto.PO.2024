@@ -1,10 +1,7 @@
 package hva.core;
 
-import java.util.ArrayList;
 
 public class Veterinarian extends Employee {
-    //Atributes
-    private ArrayList<String> register = new ArrayList<>();
     //Constructor
     public Veterinarian(String id, String n, Hotel h) {
         super(id, n, h);
@@ -61,6 +58,7 @@ public class Veterinarian extends Employee {
 
     void vaccinate(Animal a, Vaccine v) {
         VaccinationResults result;
+        String toAdd = "REGISTO-VACINA|" + v.getId() + "|" + this.getId() + "|" + a.getSpecies().getId();
         int dano = dano(v, a);
         if (dano == -1) {
             result = VaccinationResults.NORMAL;
@@ -70,15 +68,19 @@ public class Veterinarian extends Employee {
         }
         if (0 < dano && dano < 5) {
             result = VaccinationResults.ACCIDENT;
+            getHotel().getVaccinesUsed().add(toAdd);
         } else {
             result = VaccinationResults.ERROR;
+            getHotel().getVaccinesUsed().add(toAdd);
         }
         VaccineApplication vaccineUsed = new VaccineApplication(result, this, a, v);
         if (vaccineUsed.isCorrect()) {
             a.getHealth().add(result);
             v.addUsage(vaccineUsed);
+            workDone.add(toAdd);
+            
         }
-        register.add("REGISTO-VACINA|" + v.getId() + "|" + this.getId() + "|" + a.getSpecies().getId());
+        
     }
 
     @Override
@@ -88,8 +90,5 @@ public class Veterinarian extends Employee {
         } else {
             return "VET|" + getId() + "|" + getName() + "|" + responsibilities;
         }
-    }
-    public ArrayList<String> getRegister(){
-        return register;
     }
 }

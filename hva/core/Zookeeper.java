@@ -15,16 +15,12 @@ public class Zookeeper extends Employee {
 
     @Override
     void addResponsibility(String id) {
-        Habitat h = hotel.findHabitat(id);
-        responsibilities.add(h.getId());
-        h.addEmployee(this);
+        responsibilities.add(id);
     }
 
     @Override
     void removeResponsibility(String id) {
-        Habitat h = hotel.getHabitat(id);
-        responsibilities.remove(h.getId());
-        h.removeEmployee(this);
+        responsibilities.remove(id);
     }
 
     @Override
